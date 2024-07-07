@@ -86,7 +86,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
                 removeFromCart,
             }}
         >
-            {children}
+            { children }
         </ShoppingCartContext.Provider>
     );
 }
