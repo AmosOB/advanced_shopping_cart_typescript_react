@@ -6,7 +6,7 @@ type ShoppingCartProviderProps = {
 };
 
 
-type ShoppingCartContextProps = {
+type ShoppingCartContextType = {
     getItemQuantity: (id: number) => number;
     increaseCartQuantity: (id: number) => void;
     decreaseCartQuantity: (id: number) => void;
@@ -20,15 +20,11 @@ type CartItem = {
 };
 
 
-const ShoppingCartContext = createContext<ShoppingCartContextProps | undefined>(undefined);
+const ShoppingCartContext = createContext<ShoppingCartContextType>({} as ShoppingCartContextType);
 
 
 export function useShoppingCart() {
-    const context = useContext(ShoppingCartContext);
-    if (!context) {
-        throw new Error("useShoppingCart must be used within a ShoppingCartProvider");
-    }
-    return context;
+    return useContext(ShoppingCartContext)
 }
 
 
@@ -58,11 +54,11 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
     function decreaseCartQuantity(id: number) {
         setCartItems(currItems => {
             if (currItems.find(item => item.id === id)?.quantity === 1) {
-                return currItems.filter(item => item.id !== id);
+                return currItems.filter(item => item.id !== id)
             } else {
                 return currItems.map(item => {
                     if (item.id === id) {
-                        return { ...item, quantity: item.quantity - 1 };
+                        return { ...item, quantity: item.quantity - 1 }
                     } else {
                         return item;
                     }
@@ -86,7 +82,7 @@ export function ShoppingCartProvider({ children }: ShoppingCartProviderProps) {
                 removeFromCart,
             }}
         >
-            { children }
+            {children}
         </ShoppingCartContext.Provider>
     );
-}
+};
